@@ -74,7 +74,7 @@ namespace SLRealism
             }
         }
 
-        [PluginEvent(ServerEventType.PlayerDamage)]
+        //[PluginEvent(ServerEventType.PlayerDamage)]
         public void AdrenalineDamage(Player player, Player attacker, DamageHandlerBase damageHanlder)
         {
             if(damageHanlder is UniversalDamageHandler handler)

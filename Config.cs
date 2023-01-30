@@ -39,10 +39,12 @@ namespace SLRealism
         [Description("Multiplier for bleeding duration for limbshots. Formula is damage x value = duration")]
         public float BleedingMultiplierLimbshots { get; set; } = 0.2f;
 
+        /**
         [Description("Mimics how humans have adrenaline when injured, meant to somewhat balance out the absurd amount of damage guns can do with bleeding.")]
         public bool ApplyAdrenalineOnDamage { get; set; } = true;
 
         [Description("Mulitplier for how much adrenaline to give depending on damage. Formula is: damage x value = adrenaline hp")]
         public float AdrenalineDamageMultiplier { get; set; } = 0.2f;
+        **/
     }
 }
