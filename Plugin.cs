@@ -17,12 +17,16 @@ namespace SLRealism
 
         public static SLRealism instance;
         [PluginConfig(PluginName)]
-        public Config config;
+        public Config config = new Config();
         public EventHandler eventHandler;
 
         [PluginEntryPoint(PluginName, PluginVersion, PluginDesc, "btelnyy#8395")]
         public void LoadPlugin()
         {
+            if(!config.PluginEnabled)
+            {
+                return;
+            }
             instance = this;
             PluginAPI.Events.EventManager.RegisterEvents<EventHandler>(this);
             Log.Debug("SLRealism v" + PluginVersion + " loaded.");
