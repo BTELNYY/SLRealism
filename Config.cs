@@ -38,13 +38,30 @@ namespace SLRealism
 
         [Description("Multiplier for bleeding duration for limbshots. Formula is damage x value = duration")]
         public float BleedingMultiplierLimbshots { get; set; } = 0.2f;
+        
 
-        /**
-        [Description("Mimics how humans have adrenaline when injured, meant to somewhat balance out the absurd amount of damage guns can do with bleeding.")]
-        public bool ApplyAdrenalineOnDamage { get; set; } = true;
+        [Description("Mimics how humans have adrenaline when injured, meant to somewhat balance out the absurd amount of damage guns can do with bleeding. THIS SETTING DOES NOTHING, IT IS DISABLED AND DOES NOT WORK CORRECTLY!")]
+        public bool ApplyAdrenalineOnDamage { get; set; } = false;
 
         [Description("Mulitplier for how much adrenaline to give depending on damage. Formula is: damage x value = adrenaline hp")]
         public float AdrenalineDamageMultiplier { get; set; } = 0.2f;
-        **/
+
+        [Description("Enable April fools event occurences?")]
+        public bool AprilFoolsEnabled { get; set; } = false;
+
+        [Description("April fools only, how much speed should zombies get when they are resurrected or the plugin forces them to change?")]
+        public int ZombieSpeedBoostAmount { get; set; } = 11;
+
+        [Description("April fools only, Should SCP 914 make humans become SCP 049-2 on rough?")]
+        public bool Scp914RoughMakesZombies { get; set; } = true;
+
+        [Description("Should SCP 914 kill players on rough? if the above flag is true, this setting does nothing.")]
+        public bool Scp914KillsOnRough { get; set; } = false;
+
+        [Description("April fools only, can you pull pink candy from SCP 330?")]
+        public bool AprilFoolsPinkCandyExists { get; set; } = true;
+
+        [Description("April fools only, What percent chance should pink candy have of being pulled from SCP 330? (Use decimal notation for percent, 1.0 = 100%, 0.5 = 50%, etc.)")]
+        public float AprilFoolsPinkCandyChance { get; set; } = 0.3f;
     }
 }

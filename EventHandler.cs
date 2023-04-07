@@ -9,6 +9,20 @@ using PlayerRoles.PlayableScps.Scp939;
 using InventorySystem.Items.Usables.Scp244.Hypothermia;
 using YamlDotNet.Core.Tokens;
 using static Steamworks.InventoryItem;
+using Scp914;
+using UnityEngine;
+using PlayerRoles.FirstPersonControl;
+using InventorySystem;
+using InventorySystem.Items;
+using InventorySystem.Items.Pickups;
+using InventorySystem.Items.Usables.Scp330;
+using MapGeneration;
+using System.Linq;
+using PluginAPI.Core.Zones;
+using PluginAPI.Core.Doors;
+using InventorySystem.Items.Jailbird;
+using Mirror;
+using System.Collections.Generic;
 
 namespace SLRealism
 {
@@ -74,7 +88,7 @@ namespace SLRealism
             }
         }
 
-        //[PluginEvent(ServerEventType.PlayerDamage)]
+        [PluginEvent(ServerEventType.PlayerDamage)]
         public void AdrenalineDamage(Player player, Player attacker, DamageHandlerBase damageHanlder)
         {
             if(damageHanlder is UniversalDamageHandler handler)
@@ -102,6 +116,64 @@ namespace SLRealism
         public void OnCommand(Player player, string command, string[] arguments, bool result, string response)
         {
             Log.Info("Command executed: " + command);
+        }
+
+        [PluginEvent(ServerEventType.Scp049ResurrectBody)]
+        public void OnZombieSpawn(Player player, Player target, BasicRagdoll ragdoll)
+        {
+            if(_config.AprilFoolsEnabled)
+            {
+                if(target.RoleBase.RoleTypeId == RoleTypeId.Scp0492)
+                {
+                    target.EffectsManager.ChangeState("MovementBoost", (byte)_config.ZombieSpeedBoostAmount, 0, false);
+                }
+            }
+        }
+
+        [PluginEvent(ServerEventType.Scp914ProcessPlayer)]
+        public void On914Rough(Player player, Scp914KnobSetting knobSetting, Vector3 outPosition)
+        {
+            if (knobSetting == Scp914KnobSetting.Rough)
+            {
+                if (_config.Scp914RoughMakesZombies)
+                {
+                    //SCPs cannot die to 914
+                    if (player.Role.IsHuman() && _config.AprilFoolsEnabled)
+                    {
+                        player.ReferenceHub.inventory.ServerDropEverything();
+                        player.SetRole(RoleTypeId.Scp0492);
+                        player.EffectsManager.ChangeState("MovementBoost", (byte)_config.ZombieSpeedBoostAmount, 0, false);
+                        player.ReferenceHub.TryOverridePosition(outPosition, new Vector3());
+                        return;
+                    }
+                }
+                //april fools does not have to be enabled for this one to work, however making zombies overrides it.
+                if (_config.Scp914KillsOnRough)
+                {
+                    if (player.Role.IsHuman())
+                    {
+                        player.ReferenceHub.TryOverridePosition(outPosition, new Vector3());
+                        player.Kill();
+                        return;
+                    }
+                }
+            }
+        }
+
+
+        [PluginEvent(ServerEventType.PlayerPickupScp330)]
+        public void Scp330Interact(Player player, ItemPickupBase item)
+        {
+            if (!_config.AprilFoolsEnabled)
+            {
+                return;
+            }
+            if (Random.Range(0f, 1.0f) <= _config.AprilFoolsPinkCandyChance)
+            {
+                var bag = player.ReferenceHub.inventory.ServerAddItem(ItemType.SCP330) as Scp330Bag;
+                bag.TryAddSpecific(CandyKindID.Pink);
+                bag.ServerRefreshBag();
+            }
         }
     }
 }

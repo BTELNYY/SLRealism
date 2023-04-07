@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using PluginAPI;
 using PluginAPI.Core.Attributes;
 using PluginAPI.Core;
+using PluginAPI.Helpers;
+using Microsoft.SqlServer.Server;
+using System.IO;
 
 namespace SLRealism
 {
@@ -19,6 +22,8 @@ namespace SLRealism
         [PluginConfig(PluginName)]
         public Config config = new Config();
         public EventHandler eventHandler;
+
+        public string AudioPath = Path.Combine($"{Paths.Plugins}", "Sounds");
 
         [PluginEntryPoint(PluginName, PluginVersion, PluginDesc, "btelnyy#8395")]
         public void LoadPlugin()
