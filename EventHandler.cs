@@ -15,6 +15,8 @@ using InventorySystem.Items.Usables;
 using System.Collections.Generic;
 using CustomPlayerEffects;
 using InventorySystem.Disarming;
+using SLRealism.Effects;
+using System;
 
 namespace SLRealism
 {
@@ -75,7 +77,7 @@ namespace SLRealism
             {
                 return;
             }
-            player.EffectsManager.ChangeState("bleeding", 1, 40 * _config.DamageToBleedingMultiplier939, false);
+            player.EffectsManager.ChangeState<Bleeding>(1, 40 * _config.DamageToBleedingMultiplier939, false);
         }
 
         [PluginEvent(ServerEventType.PlayerDamage)]
@@ -100,13 +102,13 @@ namespace SLRealism
                     case HitboxType.Body:
                         if (player.RoleBase.Team != Team.SCPs && _config.ApplyBleedingOnBulletDamage)
                         {
-                            player.EffectsManager.ChangeState("bleeding", 1, (handle.Damage * _config.BleedingMultiplierGunshots), true);
+                            player.EffectsManager.ChangeState<Bleeding>(1, (handle.Damage * _config.BleedingMultiplierGunshots), true);
                         }
                     break;
                     case HitboxType.Limb:
                         if (player.RoleBase.Team != Team.SCPs && _config.ApplyBleedingOnBulletDamage)
                         {
-                            player.EffectsManager.ChangeState("bleeding", 1, (handle.Damage * _config.BleedingMultiplierLimbshots), true);
+                            player.EffectsManager.ChangeState<Bleeding>(1, (handle.Damage * _config.BleedingMultiplierLimbshots), true);
                         }
                     break;
                 }
@@ -186,6 +188,17 @@ namespace SLRealism
                         player.ReferenceHub.inventory.ServerDropEverything();
                         Server.RunCommand("disarm " + player.PlayerId);
                         player.SendConsoleMessage("You are now handcuffed, enjoy! ;)");
+                    }
+                    break;
+                case "bleed":
+                    try
+                    {
+                        player.EffectsManager.ChangeState<Bleeding>(1, 20);
+                        player.EffectsManager.EnableEffect<Bleeding>(1, false);
+                        player.SendConsoleMessage("Bleeding you!");
+                    }catch(Exception ex)
+                    {
+                        player.SendConsoleMessage(ex.ToString(), "red");
                     }
                     break;
             }
@@ -295,7 +308,7 @@ namespace SLRealism
             {
                 return;
             }
-            if (Random.Range(0f, 1.0f) <= _config.AprilFoolsPinkCandyChance)
+            if (UnityEngine.Random.Range(0f, 1.0f) <= _config.AprilFoolsPinkCandyChance)
             {
                 var bag = player.ReferenceHub.inventory.ServerAddItem(ItemType.SCP330) as Scp330Bag;
                 bag.TryAddSpecific(CandyKindID.Pink);

@@ -100,6 +100,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\BetterBleeding.cs" />
     <Compile Include="EventHandler.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Plugin.cs" />
