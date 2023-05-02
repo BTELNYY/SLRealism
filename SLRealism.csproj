@@ -104,9 +104,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\Extensions.cs" />
-    <Compile Include="Resources\FakeConnection.cs" />
-    <Compile Include="Resources\AudioPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

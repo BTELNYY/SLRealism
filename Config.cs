@@ -15,6 +15,9 @@ namespace SLRealism
         [Description("Apply bleeding effect when player is hit by 939s claw?")]
         public bool ApplyBleedingPer939Claw { get; set; } = true;
 
+        [Description("Nullify the extra 20 damage bleeding gives you.")]
+        public bool FixBleedingDamage { get; set; } = true;
+
         [Description("A magic number used to get how long should the bleeding effect last based on the damage dealt, this specific value effects SCP 939s claw attack. Lower number here means lower amount of time of bleeding effect. Formula is 40 x value = seconds of bleed. On default settings, this is 24 seconds, or roughy 45-50 HP lost")]
         public float DamageToBleedingMultiplier939 { get; set; } = 0.60f;
 
@@ -45,6 +48,15 @@ namespace SLRealism
 
         [Description("Mulitplier for how much adrenaline to give depending on damage. Formula is: damage x value = adrenaline hp")]
         public float AdrenalineDamageMultiplier { get; set; } = 0.2f;
+        
+        [Description("Should SCP 914 kill players on rough? if the above flag is true, this setting does nothing.")]
+        public bool Scp914KillsOnRough { get; set; } = true;
+
+        [Description("Should 914 give status effects to players in the machine when its set to course?")]
+        public bool Scp914AfflictsEffectsOnCourse { get; set; } = true;
+
+        [Description("How long should 914 course given effects last?")]
+        public float Scp914EffectLength { get; set; } = 11f;
 
         [Description("Enable April fools event occurences?")]
         public bool AprilFoolsEnabled { get; set; } = false;
@@ -55,13 +67,19 @@ namespace SLRealism
         [Description("April fools only, Should SCP 914 make humans become SCP 049-2 on rough?")]
         public bool Scp914RoughMakesZombies { get; set; } = true;
 
-        [Description("Should SCP 914 kill players on rough? if the above flag is true, this setting does nothing.")]
-        public bool Scp914KillsOnRough { get; set; } = false;
-
         [Description("April fools only, can you pull pink candy from SCP 330?")]
         public bool AprilFoolsPinkCandyExists { get; set; } = true;
 
         [Description("April fools only, What percent chance should pink candy have of being pulled from SCP 330? (Use decimal notation for percent, 1.0 = 100%, 0.5 = 50%, etc.)")]
         public float AprilFoolsPinkCandyChance { get; set; } = 0.3f;
+
+        [Description("Should eating more then a certain amount of painkillers give you poison?")]
+        public bool EnablePainkillerOverdose { get; set; } = true;
+
+        [Description("Painkiller overdose amount, how many should you take before you die?")]
+        public int PainkillerOverdoseAmount { get; set; } = 3;
+
+        [Description("How long should you be given poison when overdosed?")]
+        public float PainKillerOverdoseLength { get; set; } = 60;
     }
 }
