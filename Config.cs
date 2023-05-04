@@ -56,7 +56,14 @@ namespace SLRealism
         public bool Scp914AfflictsEffectsOnCourse { get; set; } = true;
 
         [Description("How long should 914 course given effects last?")]
-        public float Scp914EffectLength { get; set; } = 11f;
+        public float Scp914EffectLength { get; set; } = 12f;
+
+        [Description("Should 914 apply the SCP:CB effect to players on very fine? (Very fast speed followed by instant death)")]
+        public bool Scp914AppliesVeryFine { get; set; } = true;
+
+        [Description("How long should players remain alive after using 914 on very fine?")]
+        public float Scp914VeryFineLifeTime { get; set; } = 30f;
+
 
         [Description("Enable April fools event occurences?")]
         public bool AprilFoolsEnabled { get; set; } = false;

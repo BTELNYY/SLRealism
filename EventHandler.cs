@@ -17,6 +17,9 @@ using CustomPlayerEffects;
 using InventorySystem.Disarming;
 using SLRealism.Effects;
 using System;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using MEC;
 
 namespace SLRealism
 {
@@ -68,7 +71,7 @@ namespace SLRealism
         }
 
 
-        public Config _config = SLRealism.instance.config;
+        public static Config _config = SLRealism.instance.config;
 
         [PluginEvent(ServerEventType.PlayerDamage)]
         public void OnPlayerClawed(Player player, Player attacker, DamageHandlerBase damageHandler)
@@ -253,11 +256,26 @@ namespace SLRealism
             {
                 if (player.IsHuman)
                 {
-                    player.EffectsManager.ChangeState("cardiacarrest", 1, _config.Scp914EffectLength, true);
-                    player.EffectsManager.ChangeState("disabled", 1, _config.Scp914EffectLength, true);
+                    player.EffectsManager.ChangeState<CardiacArrest>(1, _config.Scp914EffectLength, true);
+                    player.EffectsManager.ChangeState<Disabled>(1, _config.Scp914EffectLength, true);
                 }
             }
         }
+
+        private static Dictionary<Player, DateTime> deathRowVeryFine = new Dictionary<Player, DateTime>();
+
+        [PluginEvent(ServerEventType.Scp914ProcessPlayer)]
+        public void OnVeryFine(Player player, Scp914KnobSetting knobSetting, Vector3 outPosition)
+        {
+            if(knobSetting == Scp914KnobSetting.VeryFine && _config.Scp914AppliesVeryFine && !player.IsSCP)
+            {
+                player.EffectsManager.ChangeState<MovementBoost>(255, _config.Scp914VeryFineLifeTime, true);
+                player.EffectsManager.ChangeState<Poisoned>(5, 0, false);
+                player.EffectsManager.ChangeState<Concussed>(6, 0, false);
+            }
+        }
+
+
 
         [PluginEvent(ServerEventType.PlayerReceiveEffect)]
         public void OnEffectGiven(Player player, StatusEffectBase effect, byte intensity, float duration)
@@ -294,6 +312,7 @@ namespace SLRealism
                     if (player.Role.IsHuman())
                     {
                         player.ReferenceHub.TryOverridePosition(outPosition, new Vector3());
+                        player.EffectsManager.ChangeState<SeveredHands>(1, 1, true);
                         player.Damage(-1, "Body is chopped up and horribly mutilated");
                         return;
                     }
